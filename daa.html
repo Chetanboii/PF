@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Design and Analysis of Algorithms (DAA) — Course Assignment by Chetan Dollin.">
+  <title>DAA | Design and Analysis of Algorithms</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap">
+  <style>
+    /* ---- Design Tokens (mirrored from portfolio) ---- */
+    :root {
+      --bg-deep-black: #0A0A0A;
+      --surface-graphite: #1A1A1A;
+      --accent-silver: #C0C0C0;
+      --text-soft-white: #F5F5F5;
+      --text-muted-grey: #8E9192;
+      --glass-bg: rgba(26, 26, 26, 0.4);
+      --text-gradient: linear-gradient(135deg, #F5F5F5 30%, #C0C0C0 100%);
+      --glow-silver: 0 0 30px rgba(192, 192, 192, 0.08);
+      --glow-silver-strong: 0 0 40px rgba(192, 192, 192, 0.25);
+      --radius-md: 16px;
+      --radius-lg: 24px;
+    }
+
+    /* ---- Base Reset ---- */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      font-size: 16px;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg-deep-black);
+      color: var(--text-soft-white);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* ---- Page Container ---- */
+    .page-wrapper {
+      width: 100%;
+      max-width: 640px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 40px;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.15s forwards;
+    }
+
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ---- Back Link ---- */
+    .back-link {
+      align-self: flex-start;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      color: var(--text-muted-grey);
+      text-decoration: none;
+      letter-spacing: 0.03em;
+      transition: color 0.3s ease;
+    }
+
+    .back-link:hover {
+      color: var(--text-soft-white);
+    }
+
+    .back-link svg {
+      width: 16px;
+      height: 16px;
+      stroke: currentColor;
+    }
+
+    /* ---- Header ---- */
+    .page-header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .subject-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--accent-silver);
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 6px 16px;
+      border-radius: 9999px;
+    }
+
+    .subject-title {
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+      background: var(--text-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .subject-subtitle {
+      font-size: 0.95rem;
+      color: var(--text-muted-grey);
+      line-height: 1.6;
+      max-width: 480px;
+    }
+
+    /* ---- Assignment Card ---- */
+    .assignment-section {
+      width: 100%;
+      background: var(--glass-bg);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      border-radius: var(--radius-lg);
+      padding: 40px 36px;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.5);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .assignment-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: var(--radius-lg);
+      padding: 1px;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.06) 0%, transparent 60%);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+    }
+
+    .assignment-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent-silver);
+    }
+
+    .assignment-heading {
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--text-soft-white);
+      letter-spacing: -0.01em;
+    }
+
+    .assignment-text {
+      font-size: 0.92rem;
+      color: var(--text-muted-grey);
+      line-height: 1.7;
+      max-width: 420px;
+    }
+
+    /* ---- CTA Button ---- */
+    .btn-view {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 8px;
+      padding: 14px 36px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      color: var(--bg-deep-black);
+      background: var(--text-soft-white);
+      border: none;
+      border-radius: 9999px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 4px 20px rgba(245, 245, 245, 0.12);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-view::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(255, 255, 255, 0.25);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      border-radius: inherit;
+    }
+
+    .btn-view:hover {
+      transform: translateY(-2px) scale(1.03);
+      box-shadow: 0 8px 30px rgba(245, 245, 245, 0.2), var(--glow-silver-strong);
+    }
+
+    .btn-view:hover::after {
+      opacity: 1;
+    }
+
+    .btn-view:active {
+      transform: translateY(0) scale(0.98);
+    }
+
+    .btn-view svg {
+      width: 18px;
+      height: 18px;
+      stroke: currentColor;
+      transition: transform 0.3s ease;
+    }
+
+    .btn-view:hover svg {
+      transform: translateX(3px);
+    }
+
+    /* ---- Footer ---- */
+    .page-footer {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--text-muted-grey);
+      letter-spacing: 0.04em;
+      opacity: 0.6;
+    }
+
+    /* ---- Responsive ---- */
+    @media (max-width: 480px) {
+      body {
+        padding: 16px;
+      }
+
+      .assignment-section {
+        padding: 28px 20px;
+      }
+
+      .btn-view {
+        width: 100%;
+        justify-content: center;
+        padding: 14px 24px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="page-wrapper">
+
+    <!-- Back to Portfolio -->
+    <a href="./index.html" class="back-link">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="19" y1="12" x2="5" y2="12"></line>
+        <polyline points="12 19 5 12 12 5"></polyline>
+      </svg>
+      Back to Portfolio
+    </a>
+
+    <!-- Header -->
+    <header class="page-header">
+      <span class="subject-badge">2nd Semester — MCA</span>
+      <h1 class="subject-title">Design and Analysis of Algorithms</h1>
+      <p class="subject-subtitle">Course assignments and academic work for DAA, focusing on algorithmic optimization, complexity analysis, and problem-solving strategies.</p>
+    </header>
+
+    <!-- Assignment Card -->
+    <div class="assignment-section">
+      <span class="assignment-label">Course Assignment</span>
+      <h2 class="assignment-heading">DAA Assignment</h2>
+      <p class="assignment-text">Click the button below to view the Design and Analysis of Algorithms assignment.</p>
+
+      <!-- Assignment PDF Link -->
+      <a href="https://drive.google.com/file/d/13xWlwpWTf759wnX3rtGeFxmXlPRjno4T/view?usp=sharing" class="btn-view" id="btn-view-assignment" target="_blank" rel="noopener noreferrer">
+        View Assignment
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+          <polyline points="12 5 19 12 12 19"></polyline>
+        </svg>
+      </a>
+    </div>
+
+    <!-- Footer -->
+    <p class="page-footer">© 2026 Chetan Dollin</p>
+
+  </div>
+
+</body>
+
+</html>
